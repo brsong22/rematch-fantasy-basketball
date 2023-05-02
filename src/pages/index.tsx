@@ -5,25 +5,22 @@ export default function HomePage() {
 
   return (
     <div>
-      Welcome to Next.js!
+      Welcome to REMATCH: Fantasy Basketball!
       {!session && (
         <>
+          <br />
           <span>You are not signed in</span>
-          <form method="post" action={`/api/auth/signin`} onSubmit={(e) => {
-            e.preventDefault()
-            signIn('yahoo')
-          }}>
-            <button type="submit">Sign in with Yahoo!</button>
-          </form>
+          <br />
+          <button onClick={() => signIn('yahoo')}>Sign in</button>
         </>
       )}
       {session?.user && (
         <>
+          <br />
           <span>
-            <small>Signed in as</small>
-            <br />
-            <strong>{session.user.email ?? session.user.name}</strong>
+            <small>Signed in as:</small>&nbsp;<strong>{session.user.email ?? session.user.name}</strong>
           </span>
+          <br />
           <a
             href={`/api/auth/signout`}
             onClick={(e) => {
