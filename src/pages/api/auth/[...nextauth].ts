@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		async redirect({ url, baseUrl }: any) {
-			return baseUrl
+			return url
 		},
 		async session({ session, token }: any) {
 			session.token = token
@@ -50,7 +50,6 @@ export const authOptions: NextAuthOptions = {
 		async signIn({ user, account, profile, email, credentials }: any) {
 			return true
 		},
-		async jwt({ token, user, account, profile, isNewUser }) {
 		async jwt({ token, account, profile }) {
 			if (account) {
 				token.accessToken = account.access_token
