@@ -43,12 +43,19 @@ export const authOptions: NextAuthOptions = {
 			return baseUrl
 		},
 		async session({ session, token }: any) {
+			session.token = token
+
 			return session
 		},
 		async signIn({ user, account, profile, email, credentials }: any) {
 			return true
 		},
 		async jwt({ token, user, account, profile, isNewUser }) {
+		async jwt({ token, account, profile }) {
+			if (account) {
+				token.accessToken = account.access_token
+			}
+
 			return token
 		}
 	},
