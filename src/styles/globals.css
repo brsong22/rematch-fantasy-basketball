@@ -18,10 +18,27 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #fff;
+}
+
+table {
+  table-layout: fixed;
+}
+
+tr {
+  border-bottom: 1px solid black;
+}
+
+tr:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+tr td.playoffsMatchup {
+  background-color: #fdf9e6;
+}
+
+th, td {
+  text-align: left;
+  padding-right: 5px;
 }
