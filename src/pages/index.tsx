@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import LeaguesList from '../components/LeaguesList'
+import LoginButton from '../components/Utility/LoginButton'
 
 export default function HomePage() {
  	const { data: session } = useSession()
@@ -21,9 +22,7 @@ export default function HomePage() {
 				&& (
 					<>
 						<br />
-						<span>You are not signed in</span>
-						<br />
-						<button onClick={() => signIn('yahoo', {callbackUrl: `https://localhost:3001/leagues`})}>Sign in</button>
+						<LoginButton />
 					</>
 				)
 			}
