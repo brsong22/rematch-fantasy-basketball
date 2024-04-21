@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
 	secret: process.env.AUTH_SECRET,
@@ -18,46 +18,58 @@ export const authOptions: NextAuthOptions = {
 				params: {
 					client_id: process.env.YAHOO_CLIENT_ID,
 					redirect_uri: process.env.REDIRECT_URI,
-					response_type: 'code',
-				},
-			},
-			token: {
-				url: 'https://api.login.yahoo.com/oauth2/get_token',
-				grant_type: 'authorization_code',
+					response_type: 'code'
+				}
 			},
 			client: {
 				authorization_signed_response_alg: 'ES256',
-				id_token_signed_response_alg: 'ES256',
+				id_token_signed_response_alg: 'ES256'
 			},
 			profile: (profile) => {
 				return {
 					id: profile.sub,
 					email: profile.email,
-					name: profile.name,
-				}
-			},
+					name: profile.name
+				};
+			}
 		},
 	],
 	callbacks: {
-		async redirect({ url, baseUrl }: any) {
-			return url
+		async redirect({
+			url,
+			baseUrl
+		}: any) {
+			return url;
 		},
-		async session({ session, token }: any) {
-			session.token = token
+		async session({
+			session,
+			token
+		}: any) {
+			session.token = token;
 
-			return session
+			return session;
 		},
-		async signIn({ user, account, profile, email, credentials }: any) {
-			return true
+		async signIn({
+			user,
+			account,
+			profile,
+			email,
+			credentials
+		}: any) {
+			return true;
 		},
-		async jwt({ token, account, profile }) {
+		async jwt({
+			token,
+			account,
+			profile
+		}) {
 			if (account) {
-				token.accessToken = account.access_token
+				token.accessToken = account.access_token;
 			}
 
-			return token
+			return token;
 		}
-	},
-}
+	}
+};
 
-export default NextAuth({...authOptions})
+export default NextAuth({ ...authOptions });

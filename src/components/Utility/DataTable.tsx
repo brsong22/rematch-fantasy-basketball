@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent } from 'react';
 
 interface TableProps {
 	columns: Column[],
@@ -13,18 +13,21 @@ interface Column {
 	width?: string
 }
 
-const DataTable: FunctionComponent<TableProps> = ({ tableProps, name }) => {
+const DataTable: FunctionComponent<TableProps> = ({
+	tableProps,
+	name
+}) => {
 	const {
 		columns,
 		data,
 		onRowClick
-	} = tableProps
+	} = tableProps;
 
 	return (
 		<table>
 			<colgroup>
 				{columns.map((column, index) => {
-					return column.width ? <col key={`colgroup-${index}`} width={column.width} /> : <col key={`colgroup-${index}`} />
+					return column.width ? <col key={`colgroup-${index}`} width={column.width} /> : <col key={`colgroup-${index}`} />;
 				})}
 			</colgroup>
 			<thead>	
@@ -44,7 +47,7 @@ const DataTable: FunctionComponent<TableProps> = ({ tableProps, name }) => {
 				))}
 			</tbody>
 		</table>
-	)
-}
+	);
+};
 
-export default DataTable
+export default DataTable;

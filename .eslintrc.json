@@ -3,16 +3,52 @@
     "next/core-web-vitals"
   ],
   "rules": {
+    "array-bracket-newline": [
+      "error",
+      {
+        "multiline": true,
+        "minItems": 3
+      }
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "always"
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "only-multiline"
+      }
+    ],
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "internal"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
         }
       }
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "multiline": true,
+        "minProperties": 2
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
     ]
   }
 }
