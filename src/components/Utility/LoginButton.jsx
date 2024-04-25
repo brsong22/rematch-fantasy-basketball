@@ -3,14 +3,13 @@ import {
   signIn,
   signOut
 } from "next-auth/react";
-import { FunctionComponent, useMemo } from 'react';
 
 const LoginButton = () => {
   const { data: session } = useSession();
   if (session) {
     return (
       <>
-        Signed in as {session.user.email} <br />
+        Signed in as <strong>{session.user.email}</strong> <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );

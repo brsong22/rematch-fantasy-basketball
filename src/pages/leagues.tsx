@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-import LeaguesList from '../components/UI/LeaguesList';
+import LeaguesComponent from '../components/UI/Leagues';
 import LoginButton from '../components/Utility/LoginButton';
 
-export default function Leagues() {
+export default function LeaguesPage() {
 	const { data: session } = useSession();
 	const router = useRouter();
 
@@ -13,17 +13,21 @@ export default function Leagues() {
 		if (!session?.token?.accessToken) {
 			router.push('/');
 		}
-	}, [ session ]);
+	}, [
+		router,
+		session
+	]);
 
 	return (
 		<div>
 			Welcome to REMATCH: Fantasy Basketball!
+			<br />
 			{
 				session?.token?.accessToken
 				&& (
 					<>
-						<LeaguesList />
 						<LoginButton />
+						<LeaguesComponent />
 					</>
 				)
 			}

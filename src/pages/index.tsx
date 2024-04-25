@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-import LeaguesList from '../components/UI/LeaguesList';
 import LoginButton from '../components/Utility/LoginButton';
 
 export default function HomePage() {
@@ -13,7 +12,10 @@ export default function HomePage() {
 		if (session?.token?.accessToken) {
 			router.push('/leagues');
 		}
-	}, [session]);
+	}, [
+		router,
+		session
+	]);
 
 	return (
 		<div>

@@ -1,39 +1,39 @@
 import { FunctionComponent } from 'react';
 
-interface TableProps {
-	columns: Column[],
-	data: any[],
-	onRowClick?: (row: any) => void,
+export interface TableColumn<T, K extends keyof T> {
+	displayData: (data: T) => string,
+	header: string,
+	// key: K
+	// style: string,
+	// width?: string
 }
 
-interface Column {
-	bodyElement: (data) => JSX.Element,
-	headElement: JSX.Element,
-	styleElement: (data) => JSX.Element,
-	width?: string
+export interface TableProps<T, K extends keyof T> {
+	columns: TableColumn<T, K>[],
+	data: T[],
+	name: string
+	onRowClick: (...args: any[]) => void | any,
 }
 
-const DataTable: FunctionComponent<TableProps> = ({
-	tableProps,
-	name
-}) => {
-	const {
-		columns,
-		data,
-		onRowClick
-	} = tableProps;
+
+export const DataTable = <T, K extends keyof T>({
+	columns,
+	data,
+	name,
+	onRowClick
+}: TableProps<T, K>): JSX.Element => {
 
 	return (
 		<table>
 			<colgroup>
 				{columns.map((column, index) => {
-					return column.width ? <col key={`colgroup-${index}`} width={column.width} /> : <col key={`colgroup-${index}`} />;
+					return <col key={`colgroup-${index}`} />;
 				})}
 			</colgroup>
 			<thead>	
 				<tr key={`${name}-tableHeaderRow`}>
 						{columns.map((column, index) => (
-							<th className={column.style} key={`${name}-headerRow-cell-${index}`}>{column.headElement}</th>
+							<th className={``} key={`${name}-headerRow-cell-${index}`}>{column.header}</th>
 						))}
 				</tr>
 			</thead>
@@ -41,7 +41,7 @@ const DataTable: FunctionComponent<TableProps> = ({
 				{data.length > 0 && data.map((currentValue, index) => (
 					<tr onClick={(e) => onRowClick(e, currentValue, index)} key={`${name}-${index}-row`}>
 						{columns.map((column, i) => (
-							<td className={column.styleElement(currentValue)} key={`${name}-${index}-cell-${i}`}>{column.bodyElement(currentValue)}</td>
+							<td className={``/*column.styleElement(currentValue)*/} key={`${name}-${index}-cell-${i}`}>{`${column.displayData(currentValue)}`}</td>
 						))}
 					</tr>
 				))}
@@ -49,5 +49,3 @@ const DataTable: FunctionComponent<TableProps> = ({
 		</table>
 	);
 };
-
-export default DataTable;
