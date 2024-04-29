@@ -12,7 +12,12 @@
     ],
     "array-bracket-spacing": [
       "error",
-      "always"
+      "always",
+      {
+        "arraysInArrays": false,
+        "objectsInArrays": false,
+        "singleValue": false
+      }
     ],
     "comma-dangle": [
       "error",
