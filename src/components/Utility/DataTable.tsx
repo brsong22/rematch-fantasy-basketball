@@ -1,15 +1,13 @@
 import { FunctionComponent } from 'react';
 
-export interface TableColumn<T, K extends keyof T> {
+export interface TableColumn<T> {
 	displayData: (data: T) => string,
 	header: string,
-	// key: K
-	// style: string,
-	// width?: string
+	style: (data: T) => string
 }
 
-export interface TableProps<T, K extends keyof T> {
-	columns: TableColumn<T, K>[],
+export interface TableProps<T> {
+	columns: TableColumn<T>[],
 	data: T[],
 	name: string
 	onRowClick: (...args: any[]) => void | any,
@@ -21,10 +19,10 @@ export const DataTable = <T, K extends keyof T>({
 	data,
 	name,
 	onRowClick
-}: TableProps<T, K>): JSX.Element => {
+}: TableProps<T>): JSX.Element => {
 
 	return (
-		<table>
+		<table className="table-auto">
 			<colgroup>
 				{columns.map((column, index) => {
 					return <col key={`colgroup-${index}`} />;
@@ -33,15 +31,15 @@ export const DataTable = <T, K extends keyof T>({
 			<thead>	
 				<tr key={`${name}-tableHeaderRow`}>
 						{columns.map((column, index) => (
-							<th className={``} key={`${name}-headerRow-cell-${index}`}>{column.header}</th>
+							<th className={`bg-gray-200 border border-black px-2 text-left w-auto`} key={`${name}-headerRow-cell-${index}`}>{column.header}</th>
 						))}
 				</tr>
 			</thead>
 			<tbody>
 				{data.length > 0 && data.map((currentValue, index) => (
-					<tr onClick={(e) => onRowClick(e, currentValue, index)} key={`${name}-${index}-row`}>
+					<tr className={ `even:bg-gray-100 hover:bg-gray-300 hover:cursor-pointer`} onClick={(e) => onRowClick(e, currentValue, index)} key={`${name}-${index}-row`}>
 						{columns.map((column, i) => (
-							<td className={``/*column.styleElement(currentValue)*/} key={`${name}-${index}-cell-${i}`}>{`${column.displayData(currentValue)}`}</td>
+							<td className={`border border-black px-2 w-auto ${column.style(currentValue)}`} key={`${name}-${index}-cell-${i}`}>{`${column.displayData(currentValue)}`}</td>
 						))}
 					</tr>
 				))}

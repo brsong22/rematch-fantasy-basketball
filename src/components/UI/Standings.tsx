@@ -164,27 +164,49 @@ const Standings: FunctionComponent<StandingsProps> = ({
 	const handleClickedTeam = async (e: React.MouseEvent<HTMLAnchorElement>, team: Team, rowIndex: number) => {
 		e.preventDefault();
 
-		if (team.team_key === selectedTeam?.team_key) {
+		if (team === selectedTeam) {
 			return;
 		}
 
 		setSelectedTeam(team);
 	};
-	const columns = [
+	const columns:TableColumn<Team>[] = [
 		{
-			displayData: (team: Team) => `${team.team_standings[0].rank}`,
-			header: `Finished`
+			displayData: (team: Team) => {
+				const teamRank = team.team_standings[0].rank;
+				const rankAward = teamRank === 1
+					? `\u{1F3C6}`
+					: teamRank === 2
+						? `\u{1F948}`
+						: teamRank === 3
+							? `\u{1F949}`
+							: ``;
+				return `${teamRank} ${rankAward}`;
+			},
+			header: `Placed`,
+			style: (team: Team) => {
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				return `text-center ${selectedTeamCellStyle}`;
+			}
 		},
 		{
 			displayData: (team: Team) => {
 				const finalPlacing = team.team_standings[0].playoff_seed > 0 ? team.team_standings[0].playoff_seed : `-`;
 				return `${finalPlacing}`;
 			},
-			header: `Seed`
+			header: `Seed`,
+			style: (team: Team) => {
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				return `text-center ${selectedTeamCellStyle}`;
+			}
 		},
 		{
 			displayData: (team: Team) => `${team.name}`,
-			header: `Team Name`
+			header: `Team Name`,
+			style: (team: Team) => {
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				return `text-center ${selectedTeamCellStyle}`;
+			}
 		}
 	];
 
@@ -195,7 +217,7 @@ const Standings: FunctionComponent<StandingsProps> = ({
 				&& <>
 					<span>---</span>
 					<br />
-					Your team: <strong>{currentTeam.name}</strong>
+					<strong>Standings:</strong>
 					<br />
 					<DataTable columns={columns} data={leagueTeamStandings.teams} name="standingsTable" onRowClick={handleClickedTeam} />
 				</>

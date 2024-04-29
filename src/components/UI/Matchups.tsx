@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { xml2js } from 'xml-js';
 
-import LeagueStandings from './Standings';
+import MatchupTotals from './MatchupTotals';
 import { League } from '../Models/League';
 import { Matchup } from '../Models/Matchup';
 import { Team } from '../Models/Team';
@@ -28,6 +28,7 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
     const accessToken = session?.token?.accessToken;
     
     const [ matchups, setMatchups ] = useState<Array<Matchup> | undefined>(undefined);
+    const [ selectedMatchup, setSelectedMatchup ] = useState<Matchup | undefined>(undefined);
 
     const weeks = Array.from({ length: parseInt(league.end_week, 10) }, (_, i) => i + 1).join(',');
 
@@ -35,6 +36,13 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
     
     useEffect(() => {
         const fetchMatchups = async () => {
+            /**
+             * TODO
+             * show all matchups for a given week
+             * implement a week selector and update the scoreboard to show that week's matchups
+             * this will allow additional views if user is more interested in seeing all matchups for a given week rather than all of a specific team's matchups
+             */
+            // const weeklyMatchupUrl = `${corsAnywhere}https://fantasysports.yahooapis.com/fantasy/v2/league/${league.league_key}/scoreboard;week=${selectedWeek}`
             const matchupsUrl = `${corsAnywhere}https://fantasysports.yahooapis.com/fantasy/v2/team/${team.team_key}/matchups;weeks=${weeks}`;
 
             const matchupsResponse = await fetch(matchupsUrl, { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -127,19 +135,34 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
         weeks
     ]);
 
-    const handleClickedTeam = async (e: React.MouseEvent<HTMLAnchorElement>, matchup: Matchup, rowIndex: number) => {
-		e.preventDefault();
+    const handleClickedMatchup = async (e: React.MouseEvent<HTMLAnchorElement>, matchup: Matchup, rowIndex: number) => {
+        e.preventDefault();
 
-        return;
+        if (matchup === selectedMatchup) {
+			return;
+        }
+
+		setSelectedMatchup(matchup);
     };
     
-    const columns = [
+    const columns:TableColumn<Matchup>[] = [
         {
             displayData: (matchup: Matchup) => {
                 const isPlayoffWeek = matchup.is_playoffs ? `*` : ``;
                 return `${matchup.week}${isPlayoffWeek}`;
             },
-            header: `Week`
+            header: `Week`,
+            style: (matchup: Matchup) => {
+                const cellStyle = (team.team_key === matchup.winner_team_key)
+                    ? `bg-green-50`
+                    : matchup.is_tied
+                        ? `bg-yellow-50 text-gray-400`
+                        : `bg-gray-50 text-gray-400`;
+                const playoffsCellStyle = matchup.is_playoffs ? `border-purple-600 border-b-2 border-l-2 border-t-2` : ``;
+                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-green-200 border-2` : ``;
+
+                return `${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
+            }
         },
         {
             displayData: (matchup: Matchup) => {
@@ -162,7 +185,18 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
                 
                 return `${team1?.name} ${team1Wins} | ${team2Wins} ${team2?.name}`;
             },
-            header: `Result`
+            header: `Result`,
+            style: (matchup: Matchup) => {
+                const cellStyle = (team.team_key === matchup.winner_team_key)
+                    ? `bg-green-50`
+                    : matchup.is_tied
+                        ? `bg-yellow-50 text-gray-400`
+                        : `bg-gray-50 text-gray-400`;
+                const playoffsCellStyle = matchup.is_playoffs ? `border-purple-600 border-b-2 border-r-2 border-t-2` : ``;
+                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-green-200 border-2` : ``;
+
+                return `${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
+            }
         }
     ];
 
@@ -173,11 +207,15 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
                 && <>
 			        <span>---</span>
                     <br />
-				    <strong>{`Matchups:`}</strong>
+                    <strong>Matchups:</strong>
 			        <br />
-                    <DataTable columns={columns} data={matchups} name="matchupsTable" onRowClick={handleClickedTeam} />
-			    </>
+                    <DataTable columns={columns} data={matchups} name="matchupsTable" onRowClick={handleClickedMatchup} />
+                    <br />
+                </>
             }
+            {selectedMatchup
+                && <MatchupTotals league={league} matchup={selectedMatchup} />
+			}
 		</>
 	);
 };

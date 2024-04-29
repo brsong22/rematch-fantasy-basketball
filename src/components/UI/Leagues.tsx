@@ -46,7 +46,6 @@ const Leagues: FunctionComponent = () => {
 				setUserGuid(userGuid);
 
 				const games: Array<any> = gamesData.fantasy_content[0].users[0].user[0].games[0].game;
-				
 				const leaguesArray: Array<League> = games
 					.map(game => game.leagues[0].league)
 					.flatMap((league) => {
@@ -85,33 +84,64 @@ const Leagues: FunctionComponent = () => {
 	const handleClickedLeague = async (e: React.MouseEvent<HTMLAnchorElement>, league: League, rowIndex: number) => {
 		e.preventDefault();
 
-		if (league.league_key === selectedLeague?.league_key) {
+		if (league === selectedLeague) {
 			return;
 		}
+
+        const leagueSettingsUrl = `${corsAnywhere}https://fantasysports.yahooapis.com/fantasy/v2/league/${league.league_key}/settings`;
+        
+        const leagueSettingsResponse = await fetch(leagueSettingsUrl, { headers: { Authorization: `Bearer ${accessToken}` } });
+
+        if (leagueSettingsResponse.ok) {
+            const leagueSettingsResponseString = await leagueSettingsResponse.text();
+            const leagueSettingsData: any = xml2js(leagueSettingsResponseString, {
+                alwaysArray: true,
+                compact: true,
+                ignoreAttributes: true,
+                ignoreComment: true,
+                ignoreDeclaration: true,
+                ignoreInstruction: true,
+                nativeType: true,
+                textKey: 'value'
+            });
+
+            league.stat_categories = leagueSettingsData.fantasy_content[0].league[0].settings[0].stat_categories[0].stats[0].stat.map((stat: any) => {
+                return {
+                    abbr: stat.abbr[0].value[0],
+                    display_name: stat.display_name[0].value[0],
+                    name: stat.name[0].value[0],
+                    stat_id: stat.stat_id[0].value[0]
+                };
+            });
+        }
 
 		setSelectedLeague(league);
 	};
 
-	const columns: TableColumn<League, keyof League>[] = [
+	const columns: TableColumn<League>[] = [
 		{
-			displayData: (league: League) => (`${league.season}`),
-			header: `Year`
+			displayData: (league: League) => `${league.season}`,
+			header: `Year`,
+			style: (league: League) => {
+				const selectedLeagueCellStyle = league === selectedLeague ? `bg-green-200 border-2` : ``;
+				return `text-center ${selectedLeagueCellStyle}`;
+			}
 		},
 		{
 			displayData: (league: League) => (`${league.name}`),
-			header: `League Name`
+			header: `League Name`,
+			style: (league: League) => {
+				const selectedLeagueCellStyle = league === selectedLeague ? `bg-green-200 border-2` : ``;
+				return `text-left ${selectedLeagueCellStyle}`;
+			}
 		}
 	];
 
 	return (
 		<>
 			<br />
-			<span>
-				<strong>{`${session?.user?.name}'s Leagues: `}</strong>
-			</span>
-			<div>
-				<DataTable columns={columns} data={leagues} name="leaguesTable" onRowClick={handleClickedLeague} />
-			</div>
+			<strong>Leagues:</strong>
+			<DataTable columns={columns} data={leagues} name="leaguesTable" onRowClick={handleClickedLeague} />
 			{selectedLeague
 				&& <Standings league={selectedLeague} userGuid={userGuid} />
 			}

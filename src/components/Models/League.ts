@@ -1,4 +1,5 @@
 import { Standings } from './Standings';
+import { Stat } from './Stat';
 
 export interface League {
     current_week: number;
@@ -17,6 +18,7 @@ export interface League {
     season: string;
     start_date: string;
     start_week: string;
+    stat_categories: Array<Stat>;
     url: string;
     standings: Standings;
 };
