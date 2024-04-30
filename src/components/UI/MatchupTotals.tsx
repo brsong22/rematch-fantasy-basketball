@@ -122,8 +122,11 @@ const MatchupTotals: FunctionComponent<MatchupTotalsPropTypes> = ({
                 const cellStyle = (category.winningTeam === 1)
                     ? `bg-green-100`
                     : ``;
+                const hoverStyle = (category.winningTeam === 1)
+                    ? `group-hover:bg-green-500`
+                    : `group-hover:bg-gray-300`;
 
-                return `${cellStyle}`;
+                return `${hoverStyle} ${cellStyle}`;
             }
         },
         {
@@ -133,8 +136,11 @@ const MatchupTotals: FunctionComponent<MatchupTotalsPropTypes> = ({
                 const cellStyle = (category.winningTeam === 2)
                     ? `bg-green-100`
                     : ``;
+                const hoverStyle = (category.winningTeam === 2)
+                    ? `group-hover:bg-green-500`
+                    : `group-hover:bg-gray-300`;
 
-                return `${cellStyle}`;
+                return `${hoverStyle} ${cellStyle}`;
             }
         }
     ];

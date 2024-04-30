@@ -159,9 +159,9 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
                         ? `bg-yellow-50 text-gray-400`
                         : `bg-gray-50 text-gray-400`;
                 const playoffsCellStyle = matchup.is_playoffs ? `border-purple-600 border-b-2 border-l-2 border-t-2` : ``;
-                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-green-200 border-2` : ``;
+                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-blue-100 border-2` : ``;
 
-                return `${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
+                return `group-hover:bg-gray-300 ${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
             }
         },
         {
@@ -193,9 +193,9 @@ const Matchups: FunctionComponent<MatchupsPropTypes> = ({
                         ? `bg-yellow-50 text-gray-400`
                         : `bg-gray-50 text-gray-400`;
                 const playoffsCellStyle = matchup.is_playoffs ? `border-purple-600 border-b-2 border-r-2 border-t-2` : ``;
-                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-green-200 border-2` : ``;
+                const selectedMatchupCellStyle = matchup === selectedMatchup ? `bg-blue-100 border-2` : ``;
 
-                return `${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
+                return `group-hover:bg-gray-300 ${cellStyle} ${playoffsCellStyle} ${selectedMatchupCellStyle}`;
             }
         }
     ];

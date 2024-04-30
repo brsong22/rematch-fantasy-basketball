@@ -185,7 +185,7 @@ const Standings: FunctionComponent<StandingsProps> = ({
 			},
 			header: `Placed`,
 			style: (team: Team) => {
-				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-blue-100 border-2` : ``;
 				return `text-center ${selectedTeamCellStyle}`;
 			}
 		},
@@ -196,7 +196,7 @@ const Standings: FunctionComponent<StandingsProps> = ({
 			},
 			header: `Seed`,
 			style: (team: Team) => {
-				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-blue-100 border-2` : ``;
 				return `text-center ${selectedTeamCellStyle}`;
 			}
 		},
@@ -204,7 +204,7 @@ const Standings: FunctionComponent<StandingsProps> = ({
 			displayData: (team: Team) => `${team.name}`,
 			header: `Team Name`,
 			style: (team: Team) => {
-				const selectedTeamCellStyle = team === selectedTeam ? `bg-green-200 border-2` : ``;
+				const selectedTeamCellStyle = team === selectedTeam ? `bg-blue-100 border-2` : ``;
 				return `text-center ${selectedTeamCellStyle}`;
 			}
 		}

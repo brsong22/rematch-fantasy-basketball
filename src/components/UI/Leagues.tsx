@@ -123,7 +123,7 @@ const Leagues: FunctionComponent = () => {
 			displayData: (league: League) => `${league.season}`,
 			header: `Year`,
 			style: (league: League) => {
-				const selectedLeagueCellStyle = league === selectedLeague ? `bg-green-200 border-2` : ``;
+				const selectedLeagueCellStyle = league === selectedLeague ? `bg-blue-100 border-2` : ``;
 				return `text-center ${selectedLeagueCellStyle}`;
 			}
 		},
@@ -131,7 +131,7 @@ const Leagues: FunctionComponent = () => {
 			displayData: (league: League) => (`${league.name}`),
 			header: `League Name`,
 			style: (league: League) => {
-				const selectedLeagueCellStyle = league === selectedLeague ? `bg-green-200 border-2` : ``;
+				const selectedLeagueCellStyle = league === selectedLeague ? `bg-blue-100 border-2` : ``;
 				return `text-left ${selectedLeagueCellStyle}`;
 			}
 		}

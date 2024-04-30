@@ -37,7 +37,7 @@ export const DataTable = <T, K extends keyof T>({
 			</thead>
 			<tbody>
 				{data.length > 0 && data.map((currentValue, index) => (
-					<tr className={ `even:bg-gray-100 hover:bg-gray-300 hover:cursor-pointer`} onClick={(e) => onRowClick(e, currentValue, index)} key={`${name}-${index}-row`}>
+					<tr className={ `group even:bg-gray-100 hover:!bg-gray-300 hover:cursor-pointer`} onClick={(e) => onRowClick(e, currentValue, index)} key={`${name}-${index}-row`}>
 						{columns.map((column, i) => (
 							<td className={`border border-black px-2 w-auto ${column.style(currentValue)}`} key={`${name}-${index}-cell-${i}`}>{`${column.displayData(currentValue)}`}</td>
 						))}
